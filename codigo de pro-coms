@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Productor-Consumidor</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .producer-consumer {
+      display: flex;
+      margin-right: 20px;
+    }
+
+    .producer, .consumer {
+      padding: 10px;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    .buffer {
+      padding: 10px;
+      border: 1px solid black;
+    }
+
+    .buffer h2 {
+      margin-top: 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="producer-consumer">
+      <div class="producer">
+        <h2>Productor</h2>
+        <button onclick="agregarItem()">Agregar Item</button>
+      </div>
+      <div class="consumer">
+        <h2>Consumidor</h2>
+        <button onclick="obtenerItem()">Obtener Item</button>
+      </div>
+    </div>
+    <div class="buffer">
+      <h2>Buffer</h2>
+      <ul id="buffer-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    // Obtener referencias a elementos HTML
+    const bufferList = document.getElementById('buffer-list');
+
+    // Variables para la memoria compartida
+    const buffer = [];
+    const maxBufferSize = 5;
+    let itemId = 1;
+
+    // Función para agregar un item al buffer
+    function agregarItem() {
+      if (buffer.length < maxBufferSize) {
+        buffer.push(itemId);
+        console.log(`El productor ha agregado el item ${itemId} al buffer`);
+
+        const listItem = document.createElement('li');
+        listItem.textContent = itemId;
+        bufferList.appendChild(listItem);
+
+        itemId++;
+      } else {
+        console.log('El buffer está lleno. Esperando a que el consumidor obtenga un item...');
+      }
+    }
+
+    // Función para obtener un item del buffer
+    function obtenerItem() {
+      if (buffer.length > 0) {
+        const item = buffer.shift();
+        console.log(`El consumidor ha obtenido el item ${item} del buffer`);
+
+        bufferList.removeChild(bufferList.firstChild);
+      } else {
+        console.log('El buffer está vacío. Esperando a que el productor agregue un item...');
+      }
+    }
+  </script>
+</body>
+</html>
